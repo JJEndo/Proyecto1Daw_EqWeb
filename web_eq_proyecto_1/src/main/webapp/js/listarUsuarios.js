@@ -172,7 +172,7 @@ window.onload = function() {
     console.log('Window loaded');
     llamada();
 }
-*/
+
 
 document.addEventListener("DOMContentLoaded", function() {
     console.log('DOM fully loaded and parsed');
@@ -225,3 +225,42 @@ function pintarTabla(datos) {
     </thead><tbody>${filasHtml}</tbody></table>`;
     listadoElement.innerHTML = tablaHtml;
 }
+
+
+*/
+
+	function llamada(){
+		fetch('FormUsuarios?op=1')
+		.then(response => response.json())
+		.then(data => pintarTabla(data))
+		
+	}
+	
+	
+	
+	function pintarTabla(datos){
+		
+		let html = "<table border='2' class='tablabonitadecss'>";
+			
+		for(let i=0;i<datos.length;i++){	
+						
+				html +="<tr><td>"+datos[i].id+"</td>";
+				html +="<td>"+datos[i].nombre+"</td>";
+				html += "<td>"+datos[i].mail+"</td>";
+				html += "<td>"+datos[i].tel+"</td>";
+				html += "<td><a href='altaUsuario.html?id="+datos[i].id+"&op=2'>Editar</a></td>";
+				html +="</tr>";
+		}
+		
+		html +="</table>";
+	
+		document.getElementById("listado").innerHTML = html;
+	
+			
+	}
+	
+
+    window.onload = function() {
+	
+    	llamada();
+    }

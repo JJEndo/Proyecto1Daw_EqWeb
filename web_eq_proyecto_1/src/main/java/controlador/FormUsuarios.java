@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import modelo.DaoPersona;
-import modelo.DaoUsuario;
 import modelo.Persona;
 
 import java.io.IOException;
@@ -32,7 +31,78 @@ public class FormUsuarios extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        try (PrintWriter out = response.getWriter()) {
+            int opcion = Integer.parseInt(request.getParameter("op"));
+
+            if (opcion == 2) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                Persona p = new Persona();
+                try {
+                    p.obtenerPorID(id);
+                    out.print(p.dameJson());
+                    System.out.println(p.dameJson());
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    out.print("{\"error\": \"Error al obtener la persona\"}");
+                }
+            } else {
+                try {
+                    String respuestaJSON = DaoPersona.getInstance().listarJson();
+                    out.print(respuestaJSON);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    out.print("{\"error\": \"Error al listar personas\"}");
+                }
+            }
+        } catch (NumberFormatException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print("{\"error\": \"Parámetro inválido\"}");
+        }
+    }
+
+		
+		/*
+	
 		PrintWriter out = response.getWriter();
+		
+		
+		int opcion = Integer.parseInt(request.getParameter("op"));
+		
+		if(opcion == 2) {
+			int id = Integer.parseInt(request.getParameter("id"));		
+			Persona p = new Persona();
+			try {
+				p.obtenerPorID(id);
+				System.out.println(p.toString());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
+	
+		}else {
+			String respuestaJSON;
+			try {
+				respuestaJSON = DaoPersona.getInstance().listarJson();
+				out.print(respuestaJSON);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+		}
+		
+
+		
+	}
+		
+		/*PrintWriter out = response.getWriter();
 		
 		String opcionParam = request.getParameter("op");
         if (opcionParam == null) {
@@ -93,14 +163,11 @@ public class FormUsuarios extends HttpServlet {
             response.getWriter().print("{\"error\":\"El parámetro 'op' no es válido\"}");
         }
     }
+
+		
+		PrintWriter out = response.getWriter();
 		
 		
-		
-		
-		
-		/*
-		 * 
-		 * 
 		int opcion = Integer.parseInt(request.getParameter("op"));
 		
 		
@@ -130,8 +197,9 @@ public class FormUsuarios extends HttpServlet {
 			}
 					
 		}
-		*/	
 		
+	}
+		*/	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

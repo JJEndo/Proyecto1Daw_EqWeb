@@ -13,7 +13,7 @@
     <meta name="description" content="Reconocer, apoyar y potenciar las altas capacidades de los niños"/>
     <meta name="author" content="Jonathan Endo" />
     <meta name="theme-color" content="#000" />
-    <script src="js/listarUsuarios.js"></script>
+    <script src="/src/main/webapp/js/altaUsuario.js"></script>
 </head>
 <body>
 
@@ -22,9 +22,10 @@
             <a href="./index.html" title="Logo">
                 <img class="logo" src="img/eqLogo.png" alt="Logo">
             </a>
-            <form class="my-form" name="formularioUsuario" action="FormUsuarios" method="post">
+            <form class="my-form" name="formularioUsuario" action="FormUsuarios" method="post" id="altas">
+                <input type="hidden" id="id" name="id">
                 <div class="login-welcome-row">
-                    <h1>Crea tu cuenta &#x1F44F;</h1>
+                    <h1>Crea la cuenta &#x1F44F;</h1>
                 </div>
                  <div class="text-field">
                     <label for="nombre">Nombre:
@@ -49,18 +50,7 @@
                 <button class="my-form__button" type="submit">
                     Registrar
                 </button>
-                <div class="my-form__actions">
-                    <div class="my-form__row">
-                        <span>¿Has olvidado tu contraseña?</span>
-                        <a href="#" title="Reset Password">
-                            Resetea la Contraseña
-                        </a>
-                    </div>
-                    <div class="my-form__signup">
-                        <a href="./cuenta.html" title="Login">
-                            Inicia sesión
-                        </a>
-                    </div>
+
                 </div>
             </form>
         </div>

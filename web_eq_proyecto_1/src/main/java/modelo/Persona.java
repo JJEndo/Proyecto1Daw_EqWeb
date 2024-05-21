@@ -2,6 +2,8 @@ package modelo;
 
 import java.sql.SQLException;
 
+import com.google.gson.Gson;
+
 public class Persona {
 
 	private int id;
@@ -98,6 +100,10 @@ public class Persona {
 		}
 	}
 	
+	 public String dameJson() {
+	        Gson gson = new Gson();
+	        return gson.toJson(this);
+	    }
 
 	@Override
 	public String toString() {

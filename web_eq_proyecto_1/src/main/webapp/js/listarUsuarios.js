@@ -174,7 +174,6 @@ window.onload = function() {
     llamada();
 }
 
-
 document.addEventListener("DOMContentLoaded", function() {
     console.log('DOM fully loaded and parsed');
     llamada();
@@ -226,5 +225,3 @@ function pintarTabla(datos) {
     </thead><tbody>${filasHtml}</tbody></table>`;
     listadoElement.innerHTML = tablaHtml;
 }
-
-

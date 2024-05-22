@@ -50,7 +50,7 @@ public class FormUsuarios extends HttpServlet {
                     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     out.print("{\"error\": \"Error al obtener la persona\"}");
                 }
-            } else {
+            } else if (opcion == 1){
                 try {
                     String respuestaJSON = DaoPersona.getInstance().listarJson();
                     out.print(respuestaJSON);

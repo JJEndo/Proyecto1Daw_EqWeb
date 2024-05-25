@@ -1,6 +1,17 @@
-:root {
-    --background: #F8F8FF;
-    --text: #2C2C2C;
+:root{ /*Creamos variables para los colores*/
+    --primary-color: #f3e37c;
+    --primary-color-dark: #f3d34a;
+    --secondary-color: #fcf5c7;
+    --secondary-color-dark: #adf7b6;
+    --gray-color: #ccc;
+    --gray-color-dark:#333;
+}
+
+*{
+    margin: 0; /*reseteamos para que el navegador no nos poga ninguno por defecto*/
+    padding: 0; /*reseteamos para que el navegador no nos poga ninguno por defecto*/
+    box-sizing: border-box; 
+    font-family: "Open Sans", sans-serif; /* Tipografía de letra de toda la página */
 }
 
 html {

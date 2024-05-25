@@ -13,8 +13,8 @@
 }
 
 *{
-    margin: 0; /*reseteamos para que el navegador no nos poga ninguno por defecto*/
-    padding: 0; /*reseteamos para que el navegador no nos poga ninguno por defecto*/
+    margin: 0; /*reseteamos para que el navegador no nos ponga ninguno por defecto*/
+    padding: 0; /*reseteamos para que el navegador no nos ponga ninguno por defecto*/
     box-sizing: border-box; 
     font-family: "Open Sans", sans-serif; /* Tipografía de letra de toda la página */
 }
@@ -30,7 +30,7 @@ header{
     de color rgb, pero la "a" (alpha) es la opacidad que va de 1 (opaco) a 0 (transparente). Con esto hago que la
     imagen sea un poco transparente y más oscura, ya que en rgb (0,0,0) significa negro */
     position: relative; 
-    background-image: /*linear-gradient(rgba(0,0,0,0.6),rgba(0, 0, 0, 0.6)),*/ url(/Proyecto/img/header.jpg); 
+    background-image: /* linear-gradient(rgba(0,0,0,0.6),rgba(0, 0, 0, 0.6)) */ url(/Proyecto/img/header.jpg); 
     background-size: cover; /* Hace que se guarde la escala que tiene por defecto la imagen y su relación aspecto intrínseca */
     background-position: center; /* Centramos la imagen */
     padding: 10px 8%; /* Para arriba y abajo 10px y para derecha e izquierda 8% */
@@ -119,16 +119,12 @@ body {
     font-size: 1.1rem;
     color: var(--text);
     padding: 0.5rem;
-    background: var(
-        --social-background
-    );
+    background: var(--social-background);
     font-weight: 700;
 }
 
 .socialRow>a:hover {
-    background: var(
-        --social-background-hover
-    );
+    background: var(--social-background-hover);
 }
 
 .loginWelcomeRow {
@@ -159,7 +155,7 @@ main{
 .myForm {
     display: flex;
     flex-direction: column;
-    justify-self: center;
+   /*justify-self: center;*/
     justify-content: start;
     align-items: center;
     align-self: center;

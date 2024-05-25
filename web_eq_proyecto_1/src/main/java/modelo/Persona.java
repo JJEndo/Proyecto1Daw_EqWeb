@@ -100,17 +100,41 @@ public class Persona {
 		}
 	}
 	
+	public boolean logueo(String pass) throws SQLException {
+	    boolean ok = false;
+	    Persona persona = DaoPersona.getInstance().logueando(this, pass);
+
+	    if (persona != null) {
+	        ok = true;
+	        this.setId(persona.getId());
+	        this.setNombre(persona.getNombre());
+	        this.setEmail(persona.getEmail());
+	        this.setPermiso(persona.getPermiso());
+	    }
+
+	    return ok;
+	}
+	
 	 public String dameJson() {
 	        Gson gson = new Gson();
 	        return gson.toJson(this);
 	    }
+	 
+	 public void actualizar () throws SQLException {
+		 
+		 DaoPersona.getInstance().actualizar(this);
+		 
+	 }
+	 
+	 public void borrar(int id) throws SQLException {
+		 
+		 DaoPersona.getInstance().borrar(id);
+		 
+	 }
 
 	@Override
 	public String toString() {
 		return "Persona [id=" + id + ", nombre=" + nombre + ", email=" + email + ", permiso=" + permiso + "]";
 	}
 
-	
-	
-	
 }

@@ -13,65 +13,7 @@
     <meta name="description" content="Reconocer, apoyar y potenciar las altas capacidades de los niños"/>
     <meta name="author" content="Jonathan Endo" />
     <meta name="theme-color" content="#000" />
-    <script  defer>
-		
-		window.onload = function() {
-    console.log('Window loaded');
-    llamada();
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    console.log('DOM fully loaded and parsed');
-    llamada();
-});
-
-function llamada() {
-    console.log('Iniciando fetch para FormUsuarios');
-    fetch('FormUsuarios?op=1')
-        .then(response => {
-            console.log('Respuesta recibida', response);
-            if (!response.ok) {
-                throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Datos recibidos', data);
-            pintarTabla(data);
-        })
-        .catch(error => console.error('Error fetching data:', error));
-}
-
-function pintarTabla(datos) {
-    const listadoElement = document.getElementById("listado");
-    if (!listadoElement) {
-        console.error('Elemento con id "listado" no encontrado');
-        return;
-    }
-
-    console.log('Pintando la tabla con datos', datos);
-    const filasHtml = datos.map(({ id, nombre, email, permiso }) => `
-        <tr>
-            <td>${id}</td>
-            <td>${nombre}</td>
-            <td>${email}</td>
-            <td>${permiso}</td>
-            <td><a href="altaUsuario.html?id=${id}&op=2" class="btn-editar">Editar</a></td>
-        </tr>
-    `).join('');
-
-    const tablaHtml = `<table class='listaTabla'><thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Email</th>
-            <th>Permiso</th>
-            <th>Acciones</th>
-        </tr>
-    </thead><tbody>${filasHtml}</tbody></table>`;
-    listadoElement.innerHTML = tablaHtml;
-}
-	</script>
+    <script src="js/listarUsuarios.js" defer></script>
 </head>
 <body>
 
@@ -107,7 +49,22 @@ function pintarTabla(datos) {
 
         </header>
         <main>
-			<h1>Lista de Usuarios</h1>
+			<h1>Lista de Usuarios Registrados</h1>
+			
+			<form name="Listado" method="get" action"FormUsuarios?op=1&op=04">
+
+				 <div class="text-field">
+				    <label for="tipoUsuario">Nivel de permiso:</label>
+				    <select id="tipoUsuario" name="tipoUsuario" onchange="busquedaPorTipo(this.value)">
+						
+				        <option value="" disabled selected>Selecciona una opción</option>
+				        <option value="1">Usuario registrado</option>
+				        <option value="9">Usuario administrador</option>
+				        
+				    </select>
+                </div>
+							
+			</form> 
 			<div class="listado" id="listado">
 
             </div>

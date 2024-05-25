@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Equus Quagga</title>
     <link rel="stylesheet" type="text/css" href="css/cuenta.css"> <!--Vinculamos la hoja de estilo de css-->
-    <link rel="shortcut icon" type="image/jpg/png" href="img/index/logo_icon.png" /> 
+    <link rel="shortcut icon" type="image/jpg/png" href="img/logo_icon.png" /> 
     <link rel="preconnect" href="https://fonts.googleapis.com"> <!-- Conectamos con la webfonts de Google -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;700&display=swap" rel="stylesheet"> <!-- Cargamos el archivo topográfico para que sea utilizada en la web -->
@@ -13,7 +13,7 @@
     <meta name="description" content="Reconocer, apoyar y potenciar las altas capacidades de los niños"/>
     <meta name="author" content="Jonathan Endo" />
     <meta name="theme-color" content="#000" />
-    <script src="./cuenta.js"></script>
+    <script src="css/cuenta.css"></script>
 </head>
 <body>
 
@@ -39,7 +39,7 @@
 
         <main>
 
-            <form class="myForm">
+            <form class="myForm" name="login" action="Login" method="post">
 
                 <div class="loginWelcomeRow">
                     <a href="index.html" title="Logo">
@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="inputWrapper">
-                  <input id="password" type="password"
+                  <input id="password" name="pass" type="password"
                   class="inputField" placeholder="Tu Contraseña"
                   title="Minimo 6 caracteres, almenos numero"
                   pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$"

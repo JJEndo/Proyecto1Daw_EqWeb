@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Video List EQ</title>
+	<link rel="stylesheet" type="text/css" href="css/styles.css"> <!--Vinculamos la hoja de estilo de css-->
+	<link rel="shortcut icon" type="image/jpg/png" href="img/index/logo_icon.png" />
+	<link rel="preconnect" href="https://fonts.googleapis.com"> <!-- Conectamos con la webfonts de Google -->
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;700&display=swap" rel="stylesheet">
+	<!-- Cargamos el archivo topográfico para que sea utilizada en la web -->
+	<meta name="keywords" content="AACC, altas capacidades, documental, superdotadción" />
+	<meta name="description" content="Reconocer, apoyar y potenciar las altas capacidades de los niños" />
+	<meta name="author" content="Jonathan Endo" />
+	<meta name="theme-color" content="#000" />
+	<script src="./listarVIdeos.js"></script>
+</head>
+
+<body>
+
+	<header>
+		<nav class="navbar">
+
+			<div class="navbar_brand">
+				<img src="./img/eqLogo.png" alt="EQlogo" class="brand_logo" />
+			</div>
+			<div class="navbar_nav_items">
+				<div class="nav_item">
+					<div class="dropdown_container">
+						<select id="dropdown_select">
+							<option lang="es" label="Español">Español</option>
+							<option lang="en" label="English">English</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- <div class="nav_item">
+                            <button class="signin_button">Iniciar sesión</button>
+                        </div> -->
+
+				<div>
+					<a href="./cuenta.html">
+						<button class="signin_button">Iniciar sesión</button>
+					</a>
+				</div>
+			</div>
+		</nav>
+
+	</header>
+
+	<h1>Lista de Videos Subidos</h1>
+
+	<form name="Listado" method="get" action"ListarVideos?op=1">
+
+	</form>
+	<div class="listado" id="listado">
+
+	</div>
+
+
+</body>
+
+</html>

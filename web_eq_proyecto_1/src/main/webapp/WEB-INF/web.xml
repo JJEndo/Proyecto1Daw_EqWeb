@@ -69,4 +69,14 @@
     <servlet-name>Login</servlet-name>
     <url-pattern>/Login</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>CrearCuenta</display-name>
+    <servlet-name>CrearCuenta</servlet-name>
+    <servlet-class>controlador.CrearCuenta</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CrearCuenta</servlet-name>
+    <url-pattern>/CrearCuenta</url-pattern>
+  </servlet-mapping>
 </web-app>

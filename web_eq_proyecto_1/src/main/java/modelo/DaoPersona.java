@@ -1,5 +1,8 @@
 package modelo;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -71,16 +74,24 @@ public class DaoPersona {
 	    PreparedStatement ps = null;
 	    ResultSet rs = null;
 	    Persona aux = null;
-
 	    try {
 	        ps = con.prepareStatement(sql);
 	        ps.setString(1, p.getEmail());
 	        ps.setString(2, pass);
-	        
+
+	        System.out.println("Executing query: " + ps.toString());
+
 	        rs = ps.executeQuery();
 
 	        if (rs.next()) {
-	            aux = new Persona(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));
+	            aux = new Persona();
+	            aux.setId(rs.getInt("id"));
+	            aux.setNombre(rs.getString("nombre"));
+	            aux.setEmail(rs.getString("email"));
+	            aux.setPermiso(rs.getInt("permiso"));
+	            System.out.println("User found: " + aux.getEmail());
+	        } else {
+	            System.out.println("No user found with email: " + p.getEmail());
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -103,9 +114,81 @@ public class DaoPersona {
 	    }
 
 	    return aux; // Retornará null si no se encontró ninguna coincidencia
-	}
+	}    
 
+/*
+	    try {
+	        ps = con.prepareStatement(sql);
+	        ps.setString(1, p.getEmail());
+	        ps.setString(2, pass);
+	        
+	        rs = ps.executeQuery();
+
+            if (rs.next()) {
+                aux = new Persona();
+                aux.setId(rs.getInt("id"));
+                aux.setNombre(rs.getString("nombre"));
+                aux.setEmail(rs.getString("email"));
+                aux.setPermiso(rs.getInt("permiso"));
+            }
+            
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        throw e; // Re-lanzamos la excepción para que el llamante pueda manejarla
+	    } finally {
+	        if (rs != null) {
+	            try {
+	                rs.close();
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	        if (ps != null) {
+	            try {
+	                ps.close();
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+
+	    return aux; // Retornará null si no se encontró ninguna coincidencia
+	}
+*/
+
+	  public boolean registrarUsuario(String email, String password, String nombre) throws SQLException {
+	        PreparedStatement ps = null;
+	        boolean registrado = false;
+
+	        try {
+	            String sql = "INSERT INTO persona (email, pass, nombre) VALUES (?, ?, ?)";
+	            ps = con.prepareStatement(sql);
+	            ps.setString(1, email);
+	            ps.setString(2, password);
+	            ps.setString(3, nombre);
+
+	            int rows = ps.executeUpdate();
+	            if (rows > 0) {
+	                registrado = true;
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            throw e;
+	        } finally {
+	            if (ps != null) {
+	                try {
+	                    ps.close();
+	                } catch (SQLException e) {
+	                    e.printStackTrace();
+	                }
+	            }
+	        }
+
+	        return registrado;
+	    }
 	
+	
+
 	public Persona actualizar(Persona p) throws SQLException {
 		
 		PreparedStatement ps = null;
@@ -201,7 +284,21 @@ public class DaoPersona {
         return gson.toJson(personas);
 	}
 	
-	
+    public static String getMD5(String input) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = md.digest(input.getBytes());
+            BigInteger number = new BigInteger(1, messageDigest);
+            String hashtext = number.toString(16);
+
+            while (hashtext.length() < 32) {
+                hashtext = "0" + hashtext;
+            }
+            return hashtext;
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }	
 	
 
 }

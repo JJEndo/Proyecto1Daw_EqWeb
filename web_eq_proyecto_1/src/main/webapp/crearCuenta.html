@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Equus Quagga</title>
-    <link rel="stylesheet" type="text/css" href="web_eq_proyecto1/src/main/webapp/css/crearCuenta.css"> <!--Vinculamos la hoja de estilo de css-->
+    <link rel="stylesheet" type="text/css" href="css/crearCuenta.css"> <!--Vinculamos la hoja de estilo de css-->
     <link rel="shortcut icon" type="image/jpg/png" href="img/index/logo_icon.png" /> 
     <link rel="preconnect" href="https://fonts.googleapis.com"> <!-- Conectamos con la webfonts de Google -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +13,7 @@
     <meta name="description" content="Reconocer, apoyar y potenciar las altas capacidades de los niños"/>
     <meta name="author" content="Jonathan Endo" />
     <meta name="theme-color" content="#000" />
-    <script src="/src/main/webapp//js/crearCuenta.js"></script>
+    <script src="js/crearCuenta.js"></script>
 </head>
 <body>
 
@@ -22,7 +22,7 @@
             <a href="./index.html" title="Logo">
                 <img class="logo" src="img/eqLogo.png" alt="Logo">
             </a>
-            <form class="my-form" name="formulario" action="FormUsuarios" method="post">
+            <form class="my-form" name="formulario" action="CrearCuenta" method="post">
                 <div class="login-welcome-row">
                     <h1>Crea tu cuenta &#x1F44F;</h1>
                 </div>
@@ -63,6 +63,7 @@
                             pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$" required>
                         <!-- svg -->
                     </label>
+                 <input type="hidden" id="id" name="id">
                 </div>
                 <button class="my-form__button" type="submit">
                     Registrate

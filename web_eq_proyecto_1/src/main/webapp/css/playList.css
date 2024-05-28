@@ -14,23 +14,70 @@
     font-family: "Open Sans", sans-serif; /* Tipografía de letra de toda la página */
 }
 
-html {
+/*html {
     scroll-behavior: smooth;
-}
+}*/
 
-* {
+#container{
+    max-width: 1200px;
+    margin: 0 auto; /* Centramos el container*/
+    width: 100%;
+    height:  auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+
+}   
+
+.brand_logo{
+    width: 150px;
+    cursor: pointer; /* El ratón se vuelve una mano indicando que al pinchar en el logo te lleva a un link */
     margin: 0;
-    padding: 0;
-    box-sizing: border-box;
 }
 
-body {
+ 
+header{
+    width: 100%;
+    position: relative; 
+    background-image: /*linear-gradient(rgba(0,0,0,0.6),rgba(0, 0, 0, 0.6)),*/ url(/Proyecto/img/header.jpg); 
+    background-size: cover; /* Hace que se guarde la escala que tiene por defecto la imagen y su relación aspecto intrínseca */
+    background-position: center; /* Centramos la imagen */
+    padding: 10px 8%; /* Para arriba y abajo 10px y para derecha e izquierda 8% */
+    
+}
+
+
+.navbar{
+    display: flex; /* Hago que el contenido del nav sea horizontal en vez de vertical ajustándolas */
+    align-items: center; /* El contenido de las flexbox se centra */
+    /* El logo pasa a estar a la izquierda y los botones a la derecha porque hay un espacio entre ellos, ya que el logo
+    es un elemento y los botones como están en el mismo div, son otro elemento conjunto*/
+    justify-content: space-between;
+    padding: 10px 0; /* Para arriba y abajo 10px y para derecha e izquierda 0% */
+}
+
+
+.navbar_nav_items{
+    display: flex;
+    justify-content: space-around;
+    margin: 0;
+}
+
+.nav_item {
+    position: relative;
+    display: inline-block;
+}
+
+/*body {
     font-size: 16px;
     font-family: Poppins, sans-serif;
     height: 100vh;
     padding: 6rem 2rem;
     background: var(--background);
-}
+}*/
 
 .articles {
     display: flex;

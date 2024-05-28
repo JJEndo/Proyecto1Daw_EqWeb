@@ -211,6 +211,16 @@ nav button{
     cursor: pointer;
 }
 
+.registrar{
+    display: flex; /* Hace que se alineen los elementos (verticalmente) del botón a la misma altura en el centro */
+    align-items: center; /* Alineamos horizontalmente el texto y la imagen en el centro del botón */
+    background: transparent; /* Hacemos que no tenga color el botón y que por defecto sea negro como el fondo */
+    border: 1px solid var(--primary-color-dark); /* Ahora el botón aunque es transparente tiene un borde que lo delimita */
+    padding: 7px 10px;
+    color: var(--primary-color-dark);
+    background-color: var(--gray-color-dark);
+}
+
 /* --------------------------------FOOTER--------------------------------------------------------- */
 footer {
     display: flex;

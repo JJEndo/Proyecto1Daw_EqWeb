@@ -35,6 +35,135 @@ public class FormUsuarios extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
+        // Obtener la sesión
+        HttpSession sesion = request.getSession();
+
+        // Verificar si el atributo "id" existe en la sesión
+        Object idSesionObj = sesion.getAttribute("id");
+        if (idSesionObj != null) {
+            int idSesion = (int) idSesionObj;
+            if (idSesion != 0) {
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+
+                PrintWriter out = response.getWriter();
+                int opcion = Integer.parseInt(request.getParameter("op"));
+
+                try {
+                    switch (opcion) {
+                        case 1:
+                            String respuestaJSON1 = DaoPersona.getInstance().listarJson();
+                            out.print(respuestaJSON1);
+                            break;
+
+                        case 2:
+                            int id2 = Integer.parseInt(request.getParameter("id"));
+                            Persona p2 = new Persona();
+                            p2.obtenerPorID(id2);
+                            out.print(p2.dameJson());
+                            break;
+
+                        case 3:
+                            int id3 = Integer.parseInt(request.getParameter("id"));
+                            DaoPersona.getInstance().borrar(id3);
+                            out.print("{\"success\": \"Persona eliminada\"}");
+                            break;
+
+                        case 4:
+                            int tipo = Integer.parseInt(request.getParameter("tipoUsuario"));
+                            String respuestaJSON4 = DaoPersona.getInstance().listarJson(tipo);
+                            out.print(respuestaJSON4);
+                            break;
+
+                        default:
+                            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            out.print("{\"error\": \"Opción inválida\"}");
+                            break;
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    out.print("{\"error\": \"Error interno del servidor\"}");
+                } finally {
+                    out.close();
+                }
+            } else {
+                response.sendRedirect("cuenta.html");
+            }
+        } else {
+            response.sendRedirect("cuenta.html");
+        }
+    }            
+
+/*            ------
+
+            if (idSesion != 0) {
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+
+                PrintWriter out = response.getWriter();
+                int opcion = Integer.parseInt(request.getParameter("op"));
+
+                switch (opcion) {
+                    case 1:
+                        String respuestaJSON1 = null;
+                        try {
+                            respuestaJSON1 = DaoPersona.getInstance().listarJson();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        out.print(respuestaJSON1);
+                        //response.sendRedirect("listarUsuarios.html");
+                        break;
+
+                    case 2:
+                        int id2 = Integer.parseInt(request.getParameter("id"));
+                        Persona p2 = new Persona();
+                        try {
+                            p2.obtenerPorID(id2);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        out.print(p2.dameJson());
+                        System.out.println(p2.dameJson());
+                        break;
+
+                    case 3:
+                        int id3 = Integer.parseInt(request.getParameter("id"));
+                        try {
+                            DaoPersona.getInstance().borrar(id3);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        out.print("{\"success\": \"Persona eliminada\"}");
+                        break;
+
+                    case 4:
+                        int tipo = Integer.parseInt(request.getParameter("tipoUsuario"));
+                        String respuestaJSON4 = null;
+                        try {
+                            respuestaJSON4 = DaoPersona.getInstance().listarJson(tipo);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        out.print(respuestaJSON4);
+                        break;
+
+                    default:
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        out.print("{\"error\": \"Opción inválida\"}");
+                        break;
+                }
+            } else {
+                response.sendRedirect("cuenta.html");
+            }
+        } else {
+            response.sendRedirect("cuenta.html");
+        }
+    }		
+		
+		
+		/*
 		    // Obtener la sesión
 		    HttpSession sesion = request.getSession();
 
@@ -106,7 +235,7 @@ public class FormUsuarios extends HttpServlet {
 		        response.sendRedirect("cuenta.html");
 		    }
 		}		
-		
+		*/
 		/*		
 		sesion = request.getSession();
 		

@@ -59,7 +59,7 @@ public class Login extends HttpServlet {
 	            HttpSession sesion = request.getSession();
 	            sesion.setAttribute("id", p.getId());
 	            sesion.setAttribute("permiso", p.getPermiso());
-	            response.sendRedirect("playlist.html");
+	            response.sendRedirect("listarUsuarios.html");
 	        } else {
 	            response.sendRedirect("crearCuenta.html");
 	        }

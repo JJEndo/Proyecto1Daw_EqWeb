@@ -51,16 +51,83 @@ public class DaoVideos {
 		
 	}
 	
-	
-	public void update(Video a) {
+	public Video obtenerPorId(int id) throws SQLException {
+		
+		String sql ="SELECT * FROM video WHERE id=?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, id);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		rs.next();
+		
+		Video v = new Video(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
+		
+		return v;
 		
 	}
 	
+	
+	public Video update(Video a) throws SQLException {
+
+		PreparedStatement ps = null;
+		try {
+		ps = con.prepareStatement("UPDATE video SET titulo=?,director=?,musica=?,sinopsis=?,foto=?, WHERE id=?");
+		ps.setString(1, a.getTitulo());
+		ps.setString(2, a.getDirector());
+		ps.setString(3, a.getMusica());
+		ps.setString(4, a.getSinopsis());
+		ps.setString(5, a.getFoto());
+		
+		int filas = ps.executeUpdate();
+		}finally {
+		if (ps !=null) ps.close();	
+		}
+		return a;
+	}
+	
+	public void borrar(int id) throws SQLException {
+		
+		String sql = "DELETE FROM video WHERE id=?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, id);
+		int filas = ps.executeUpdate();
+		ps.close();
+		
+	}
+	
+
+	   public ArrayList<Video> listar() throws SQLException {
+	        PreparedStatement ps = con.prepareStatement("SELECT * FROM video");
+	        ResultSet rs = ps.executeQuery();
+
+	        ArrayList<Video> result = new ArrayList<>();
+
+	        while (rs.next()) {
+	            result.add(new Video(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)));
+	        }
+
+	        rs.close();
+	        ps.close();
+
+	        return result;
+	    }
+
+	    public String listarJson() throws SQLException {
+	        Gson gson = new Gson();
+	        return gson.toJson(this.listar());
+	    }	
+	
+	
+}
+	
+/*
 	/**
 	 * Metodo que nos obtiene los elementos como una Array List
 	 * @return
 	 * @throws SQLException
-	 */
+	 *
+	/*
 	public ArrayList<Video> listar() throws SQLException{
 		
 		PreparedStatement ps =con.prepareStatement("SELECT * FROM video");
@@ -83,7 +150,7 @@ public class DaoVideos {
 	
 	/**
 	 * Ob
-	 */
+	 *
 	public String listarJoson() throws SQLException {
 		
 		String txtJSON = "";
@@ -100,3 +167,4 @@ public class DaoVideos {
 	}
 
 }
+*/

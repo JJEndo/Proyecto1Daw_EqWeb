@@ -47,7 +47,7 @@ public class GestionVideos extends HttpServlet {
 		// TODO Auto-generated method stub
 		
         try {
-            String respuestaJSON = DaoVideos.getInstance().listarJoson();
+            String respuestaJSON = DaoVideos.getInstance().listarJson();
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             PrintWriter out = response.getWriter();

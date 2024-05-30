@@ -2,6 +2,8 @@ package modelo;
 
 import java.sql.SQLException;
 
+import com.google.gson.Gson;
+
 public class Video {
 	
 	private int id;
@@ -123,16 +125,43 @@ public class Video {
 		DaoVideos.getInstance().insertar(this);		
 	}
 	
+	public void obtenerPorID(int id) throws SQLException {
+		
+		Video video = DaoVideos.getInstance().obtenerPorId(id);
+		
+		if (video != null) {
+		this.setId(video.getId());
+		this.setTitulo(video.getTitulo());
+		this.setDirector(video.getDirector());
+		this.setMusica(video.getMusica());
+		this.setSinopsis(video.getSinopsis());
+		this.setFoto(video.getFoto());
+		}
+	}
+	
 	public void update() throws SQLException {
 		DaoVideos.getInstance().update(this);
 	}
 	
-
+	public void borrar(int id) throws SQLException {
+		
+		DaoVideos.getInstance().borrar(id);
+	}
+	
+	
+	 public String dameJson() {
+	        Gson gson = new Gson();
+	        return gson.toJson(this);
+	    }
+	
+	
 	@Override
 	public String toString() {
 		return "Video [id=" + id + ", titulo=" + titulo + ", director=" + director + ", musica=" + musica
 				+ ", sinopsis=" + sinopsis + ", foto=" + foto + "]";
 	}
+
+
 	
 	
 	

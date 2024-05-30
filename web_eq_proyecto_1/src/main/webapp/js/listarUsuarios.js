@@ -676,7 +676,7 @@ function busquedaPorTipo(tipo) {
         })
         .catch(error => console.error('Error fetching data:', error));
 }
-*/
+
 window.onload = function() {
     console.log('Window loaded');
     llamada();
@@ -794,3 +794,431 @@ function busquedaPorTipo(tipo) {
         .catch(error => console.error('Error fetching data:', error));
 }
 
+
+document.addEventListener("DOMContentLoaded", function() {
+    console.log('DOM fully loaded and parsed');
+    llamada();
+});
+
+function llamada() {
+    console.log('Iniciando fetch para FormUsuarios');
+    fetch('/FormUsuarios?op=1')
+        .then(response => {
+            console.log('Respuesta recibida', response);
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+            }
+            return response.json();  // Asumiendo que la respuesta es JSON
+        })
+        .then(data => {
+            console.log('Datos recibidos', data);
+            pintarTabla(data);
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+function borrar(id) {
+    if (confirm("¿Seguro que quieres borrar?")) {
+        fetch(`/FormUsuarios?id=${id}&op=3`)
+            .then(response => {
+                console.log('Respuesta recibida', response);
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Datos después de borrar:', data);
+                if (data.success) {
+                    llamada(); // Vuelve a llamar para obtener la lista actualizada
+                } else {
+                    console.error('Error en la respuesta de borrado:', data);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+}
+
+function pintarTabla(datos) {
+    const listadoElement = document.getElementById("listado");
+    if (!listadoElement) {
+        console.error('Elemento con id "listado" no encontrado');
+        return;
+    }
+
+    console.log('Pintando la tabla con datos', datos);
+    const filasHtml = datos.map(({ id, nombre, email, permiso }) => `
+        <tr>
+            <td>${id}</td>
+            <td>${nombre}</td>
+            <td>${email}</td>
+            <td>${permiso}</td>
+            <td><a href="altaUsuario.html?id=${id}&op=2" class="btn-editar">Editar</a></td>
+            <td><a href="javascript:borrar(${id})">Borrar</a></td>
+        </tr>
+    `).join('');
+
+    const tablaHtml = `<table class='listaTabla'><thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Permiso</th>
+            <th>Acciones</th>
+        </tr>
+    </thead><tbody>${filasHtml}</tbody></table>`;
+    listadoElement.innerHTML = tablaHtml;
+}
+
+function busquedaPorTipo(tipo) {
+    tipo = Number(tipo);
+
+    if (isNaN(tipo)) {
+        console.error('El tipo debe ser un número válido');
+        return;
+    }
+
+    console.log('Iniciando fetch para FormUsuarios');
+    fetch(`/FormUsuarios?op=4&tipoUsuario=${encodeURIComponent(tipo)}`)
+        .then(response => {
+            console.log('Respuesta recibida', response);
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Datos recibidos', data);
+            if (Array.isArray(data)) {
+                pintarTabla(data);
+            } else {
+                console.error('Datos recibidos no son un array:', data);
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    console.log('DOM fully loaded and parsed');
+    llamada();
+});
+
+function llamada() {
+    console.log('Iniciando fetch para FormUsuarios');
+    fetch('web_eq_proyecto1/FormUsuarios?op=1')
+        .then(response => {
+            console.log('Respuesta recibida', response);
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+            }
+            return response.json();  // Asumiendo que la respuesta es JSON
+        })
+        .then(data => {
+            console.log('Datos recibidos', data);
+            pintarTabla(data);
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+function borrar(id) {
+    if (confirm("¿Seguro que quieres borrar?")) {
+        fetch(`web_eq_proyecto1/FormUsuarios?id=${id}&op=3`)
+            .then(response => {
+                console.log('Respuesta recibida', response);
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Datos después de borrar:', data);
+                if (data.success) {
+                    llamada(); // Vuelve a llamar para obtener la lista actualizada
+                } else {
+                    console.error('Error en la respuesta de borrado:', data);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+}
+
+function pintarTabla(datos) {
+    const listadoElement = document.getElementById("listado");
+    if (!listadoElement) {
+        console.error('Elemento con id "listado" no encontrado');
+        return;
+    }
+
+    console.log('Pintando la tabla con datos', datos);
+    const filasHtml = datos.map(({ id, nombre, email, permiso }) => `
+        <tr>
+            <td>${id}</td>
+            <td>${nombre}</td>
+            <td>${email}</td>
+            <td>${permiso}</td>
+            <td><a href="altaUsuario.html?id=${id}&op=2" class="btn-editar">Editar</a></td>
+            <td><a href="javascript:borrar(${id})">Borrar</a></td>
+        </tr>
+    `).join('');
+
+    const tablaHtml = `<table class='listaTabla'><thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Permiso</th>
+            <th>Acciones</th>
+        </tr>
+    </thead><tbody>${filasHtml}</tbody></table>`;
+    listadoElement.innerHTML = tablaHtml;
+}
+
+function busquedaPorTipo(tipo) {
+    tipo = Number(tipo);
+
+    if (isNaN(tipo)) {
+        console.error('El tipo debe ser un número válido');
+        return;
+    }
+
+    console.log('Iniciando fetch para FormUsuarios');
+    fetch(`web_eq_proyecto1/FormUsuarios?op=4&tipoUsuario=${encodeURIComponent(tipo)}`)
+        .then(response => {
+            console.log('Respuesta recibida', response);
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Datos recibidos', data);
+            if (Array.isArray(data)) {
+                pintarTabla(data);
+            } else {
+                console.error('Datos recibidos no son un array:', data);
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    console.log('DOM fully loaded and parsed');
+    llamada();
+});
+
+function llamada() {
+    console.log('Iniciando fetch para FormUsuarios');
+    fetch('FormUsuarios?op=1')
+        .then(response => {
+            console.log('Respuesta recibida', response);
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Datos recibidos', data);
+            pintarTabla(data);
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+function pintarTabla(datos) {
+    const listadoElement = document.getElementById("listado");
+    if (!listadoElement) {
+        console.error('Elemento con id "listado" no encontrado');
+        return;
+    }
+
+    console.log('Pintando la tabla con datos', datos);
+    const filasHtml = datos.map(({ id, nombre, email, permiso }) => `
+        <tr>
+            <td>${id}</td>
+            <td>${nombre}</td>
+            <td>${email}</td>
+            <td>${permiso}</td>
+            <td><a href="altaUsuario.html?id=${id}&op=2" class="btn-editar">Editar</a></td>
+            <td><a href="javascript:borrar(${id})">Borrar</a></td>
+        </tr>
+    `).join('');
+
+    const tablaHtml = `<table class='listaTabla'><thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Permiso</th>
+            <th>Acciones</th>
+        </tr>
+    </thead><tbody>${filasHtml}</tbody></table>`;
+    listadoElement.innerHTML = tablaHtml;
+}
+
+function borrar(id) {
+    if (confirm("¿Seguro que quieres borrar?")) {
+        fetch(`FormUsuarios?id=${id}&op=3`)
+            .then(response => {
+                console.log('Respuesta recibida', response);
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Datos después de borrar:', data);
+                if (data.success) {
+                    llamada(); // Vuelve a llamar para obtener la lista actualizada
+                } else {
+                    console.error('Error en la respuesta de borrado:', data);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+}
+
+function busquedaPorTipo(tipo) {
+    tipo = Number(tipo);
+
+    if (isNaN(tipo)) {
+        console.error('El tipo debe ser un número válido');
+        return;
+    }
+
+    console.log('Iniciando fetch para FormUsuarios');
+    fetch(`FormUsuarios?op=4&tipoUsuario=${encodeURIComponent(tipo)}`)
+        .then(response => {
+            console.log('Respuesta recibida', response);
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Datos recibidos', data);
+            if (Array.isArray(data)) {
+                pintarTabla(data);
+            } else {
+                console.error('Datos recibidos no son un array:', data);
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+*/
+window.onload = function() {
+    console.log('Window loaded');
+    llamada();
+};
+
+document.addEventListener("DOMContentLoaded", function() {
+    console.log('DOM fully loaded and parsed');
+    llamada();
+});
+
+function llamada() {
+    console.log('Iniciando fetch para FormUsuarios');
+    fetch('/web_eq_proyecto1/FormUsuarios?op=1')
+        .then(response => {
+            console.log('Respuesta recibida', response);
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+            }
+            return response.text();  // Cambiar a .text() temporalmente para ver el contenido de la respuesta
+        })
+        .then(text => {
+            try {
+                const data = JSON.parse(text);  // Intentar convertir el texto a JSON
+                console.log('Datos recibidos', data);
+                if (Array.isArray(data)) {
+                    pintarTabla(data);
+                } else {
+                    console.error('Datos recibidos no son un array:', data);
+                }
+            } catch (e) {
+                console.error('Error parsing JSON:', e, text);  // Mostrar el texto que causó el error
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+function borrar(id) {
+    if (confirm("¿Seguro que quieres borrar?")) {
+        fetch(`/web_eq_proyecto1/FormUsuarios?id=${id}&op=3`)
+            .then(response => {
+                console.log('Respuesta recibida', response);
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Datos después de borrar:', data);
+                if (data.success) {
+                    llamada(); // Vuelve a llamar para obtener la lista actualizada
+                } else {
+                    console.error('Error en la respuesta de borrado:', data);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+}
+
+function pintarTabla(datos) {
+    const listadoElement = document.getElementById("listado");
+    if (!listadoElement) {
+        console.error('Elemento con id "listado" no encontrado');
+        return;
+    }
+
+    console.log('Pintando la tabla con datos', datos);
+    const filasHtml = datos.map(({ id, nombre, email, permiso }) => `
+        <tr>
+            <td>${id}</td>
+            <td>${nombre}</td>
+            <td>${email}</td>
+            <td>${permiso}</td>
+            <td><a href="altaUsuario.html?id=${id}&op=2" class="btn-editar">Editar</a></td>
+            <td><a href="javascript:borrar(${id})">Borrar</a></td>
+        </tr>
+    `).join('');
+
+    const tablaHtml = `<table class='listaTabla'><thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Permiso</th>
+            <th>Acciones</th>
+        </tr>
+    </thead><tbody>${filasHtml}</tbody></table>`;
+    listadoElement.innerHTML = tablaHtml;
+}
+
+function busquedaPorTipo(tipo) {
+    tipo = Number(tipo);
+
+    if (isNaN(tipo)) {
+        console.error('El tipo debe ser un número válido');
+        return;
+    }
+
+    console.log('Iniciando fetch para FormUsuarios');
+    fetch(`/web_eq_proyecto1/FormUsuarios?op=4&tipoUsuario=${encodeURIComponent(tipo)}`)
+        .then(response => {
+            console.log('Respuesta recibida', response);
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Datos recibidos', data);
+            if (Array.isArray(data)) {
+                pintarTabla(data);
+            } else {
+                console.error('Datos recibidos no son un array:', data);
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}

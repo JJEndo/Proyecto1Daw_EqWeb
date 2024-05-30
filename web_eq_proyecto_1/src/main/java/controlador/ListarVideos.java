@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import modelo.DaoVideos;
 import modelo.Video;
 
@@ -18,6 +19,7 @@ import java.util.ArrayList;
  */
 public class ListarVideos extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	HttpSession sesion;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -32,8 +34,75 @@ public class ListarVideos extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		// Obtener la sesión
+	    HttpSession sesion = request.getSession();
 
-        String op = request.getParameter("op");
+	    // Verificar si el atributo "id" existe en la sesión
+	    Object idSesionObj = sesion.getAttribute("id");
+	    if (idSesionObj != null) {
+	        int idSesion = (int) idSesionObj;
+	        if (idSesion != 0) {
+	            response.setContentType("application/json");
+	            response.setCharacterEncoding("UTF-8");
+
+	            PrintWriter out = response.getWriter();
+	            int opcion;
+	            try {
+	                opcion = Integer.parseInt(request.getParameter("op"));
+	            } catch (NumberFormatException e) {
+	                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	                out.print("{\"error\": \"Opción inválida\"}");
+	                out.close();
+	                return;
+	            }
+
+	            try {
+	                switch (opcion) {
+	                    case 1: // Listar
+	                        String respuestaJSON1 = DaoVideos.getInstance().listarJson();
+	                        out.print(respuestaJSON1);
+	                        break;
+
+	                    case 2: // Obtener por ID
+	                        int id2 = Integer.parseInt(request.getParameter("id"));
+	                        Video video = new Video();
+	                        video.obtenerPorID(id2);
+	                        out.print(video.dameJson());
+	                        break;
+
+	                    case 3: // Borrar
+	                        int id3 = Integer.parseInt(request.getParameter("id"));
+	                        DaoVideos.getInstance().borrar(id3);
+	                        out.print("{\"success\": \"Video eliminado\"}");
+	                        break;
+
+	                    default:
+	                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	                        out.print("{\"error\": \"Opción inválida\"}");
+	                        break;
+	                }
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	                out.print("{\"error\": \"Error interno del servidor\"}");
+	            } finally {
+	                out.close();
+	            }
+	        } else {
+	            response.sendRedirect("cuenta.html");
+	        }
+	    } else {
+	        response.sendRedirect("cuenta.html");
+	    }
+	}
+		
+		
+		
+		
+		
+		
+		
+       /* String op = request.getParameter("op");
         if (op != null && op.equals("1")) {
             try {
                 String respuestaJSON = DaoVideos.getInstance().listarJoson();
@@ -51,49 +120,7 @@ public class ListarVideos extends HttpServlet {
         }
     }		
 		
-		
-/*		
-		
-        try {
-            String respuestaJSON = DaoVideos.getInstance().listarJoson();
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            PrintWriter out = response.getWriter();
-            out.print(respuestaJSON);
-            out.flush();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al obtener los videos.");
-        }
-    }
-
-/*		
-		try {
-			String respuestaJSON = DaoVideos.getInstance().listarJoson();
-			
-			System.out.println(respuestaJSON);
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		/*
-		try {
-			ArrayList<Video> listaEnObjetos = DaoVideos.getInstance().listar();
-			
-			for(Video a: listaEnObjetos) {
-				
-				System.out.println(a.toString());
-				
-			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		*/
-		
 
 
 	/**

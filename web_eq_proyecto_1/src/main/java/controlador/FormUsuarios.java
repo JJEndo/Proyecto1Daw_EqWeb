@@ -40,6 +40,59 @@ public class FormUsuarios extends HttpServlet {
 
         // Verificar si el atributo "id" existe en la sesión
         Object idSesionObj = sesion.getAttribute("id");
+        
+        if (idSesionObj != null) {
+            int idSesion = (int) idSesionObj;
+            if (idSesion != 0) {
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+
+                PrintWriter out = response.getWriter();
+                int opcion = Integer.parseInt(request.getParameter("op"));
+
+                try {
+                    switch (opcion) {
+                        case 1:
+                            String respuestaJSON1 = DaoPersona.getInstance().listarJson();
+                            out.print(respuestaJSON1);
+                            break;
+                        case 2:
+                            int id2 = Integer.parseInt(request.getParameter("id"));
+                            Persona p2 = DaoPersona.getInstance().obtenerPorID(id2);
+                            out.print(p2.dameJson());
+                            break;
+                        case 3:
+                            int id3 = Integer.parseInt(request.getParameter("id"));
+                            DaoPersona.getInstance().borrar(id3);
+                            out.print("{\"success\": true}");
+                            break;
+                        case 4:
+                            int tipo = Integer.parseInt(request.getParameter("tipoUsuario"));
+                            String respuestaJSON4 = DaoPersona.getInstance().listarJson(tipo);
+                            out.print(respuestaJSON4);
+                            break;
+                        default:
+                            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                            out.print("{\"error\": \"Opción inválida\"}");
+                            break;
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    out.print("{\"error\": \"Error interno del servidor\"}");
+                } finally {
+                    out.close();
+                }
+            } else {
+                response.sendRedirect("cuenta.html");
+            }
+        } else {
+            response.sendRedirect("cuenta.html");
+        }
+    }
+        
+        
+        /*
         if (idSesionObj != null) {
             int idSesion = (int) idSesionObj;
             if (idSesion != 0) {
@@ -542,7 +595,7 @@ public class FormUsuarios extends HttpServlet {
 		            p.insertar();
 		        } else {
 		            p.setId(id);
-		            p.actualizar(); // Suponiendo que tienes un método actualizar en la clase Persona
+		            p.actualizar(); 
 		        }
 		    } catch (SQLException e) {
 		        // TODO Auto-generated catch block

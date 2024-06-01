@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 
 /**
@@ -93,21 +94,62 @@ public class GestionVideos extends HttpServlet {
 		 * Guardamos en modo texto el nombre del archivo.
 		 */
 		String fileName = path.getFileName().toString();
+	
+		 // Define the directory where the videos will be uploaded
+	    String uploads = "/web_eq_proyecto1/src/webapp/videosSubidos"; // Update this path accordingly
+	    File file = new File(uploads, fileName);
+
+	    try (InputStream input = part.getInputStream()) {
+	        // Ensure the directory exists
+	        File uploadDir = new File(uploads);
+	        if (!uploadDir.exists()) {
+	            uploadDir.mkdirs();
+	        }
+	        
+	        // Copy the file to the target location
+	        Files.copy(input, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+	    } catch (IOException e) {
+	        // Log the error with more detail
+	        e.printStackTrace();
+	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	        PrintWriter error = response.getWriter();
+	        error.print("Se ha producido un error al subir el archivo. Contacte con el administrador.");
+	        error.println("Detalles del error: " + e.getMessage());
+	        return;
+	    }
+
+	    Video a = new Video(titulo, director, musica, sinopsis, fileName);
+
+	    try {
+	        a.insertar();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        System.out.println("Error de conexión");
+	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	        PrintWriter error = response.getWriter();
+	        error.print("Se ha producido un error en la base de datos. Contacte con el administrador.");
+	        error.println("Detalles del error: " + e.getMessage());
+	        return;
+	    }
+
+	    System.out.println(a.toString());
+	}
+		
 		
 		/**
 		 * Preparamos el camino, el buffer, por donde vamos a hacer la transmición de datos obtenidos con el destino
 		 */	
-		InputStream input = part.getInputStream();	
+		//InputStream input = part.getInputStream();	
 		
 		/**
 		 * Creamos el contenedor donde vamos a guardar los datos
 		 */
-		File file = new File(uploads, fileName);
+		//File file = new File(uploads, fileName);
 		
 		/**
 		 * Copiamos lo que contenga el proceso de lectura input dentro del contenedor file
 		 */
-		try {
+		/*try {
 		Files.copy(input, file.toPath());
 		}catch (IOException e) {
 			//Indicamos que el servidor ha encontrado una condición inesperada que le impide completar la solicitud del cliente.
@@ -115,10 +157,10 @@ public class GestionVideos extends HttpServlet {
 			PrintWriter error = response.getWriter();
 			error.print("Se ha producido un error al subir el archivo. Contacte con el administrador.");
 			return;
-		}
+		}*/
 		
 		
-		Video a = new Video(titulo, director, musica, sinopsis,fileName);
+		/*Video a = new Video(titulo, director, musica, sinopsis,fileName);
 		
 		try {
 			a.insertar();
@@ -128,8 +170,8 @@ public class GestionVideos extends HttpServlet {
 			System.out.println("Error de conexión");
 		}
 		
-		System.out.println(a.toString());
+		System.out.println(a.toString());*/
 		
-	}
+	
 
 }

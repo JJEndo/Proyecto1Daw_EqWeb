@@ -59,10 +59,12 @@
         <button onclick="makeSmall()">Minimizar</button>
         <button onclick="makeNormal()">Normal</button>
         <br><br> -->
-			<video id="videoPlayer" width="720" controls autoplay loop poster="/Proyecto/img/eqLogo.png">
-				<source src="videos/trailerEq.mp4" type="video/mp4">
-				Tu navegador no soporta los vídeos de HTML5
-			</video>
+		<video id="videoPlayer" width="720" controls autoplay loop poster="/Proyecto/img/eqLogo.png">
+		    <source src="videos/trailerEq.mp4" type="video/mp4">
+		    <source src="videos/trailerEq.webm" type="video/webm">
+		    <source src="videos/trailerEq.ogv" type="video/ogg">
+		    Tu navegador no soporta los videos de HTML5
+		</video>
 			<div class="botonesPlayer">
 				<button id="botonPlayPause">Play/Pause</button>
 				<button id="botonMute">Mute/Unmute</button>

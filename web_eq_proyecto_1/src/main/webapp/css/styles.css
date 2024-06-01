@@ -14,13 +14,6 @@
     font-family: "Open Sans", sans-serif; /* Tipografía de letra de toda la página */
 }
 
-/*
-body {
-    background-color: black; /* Color del fondo negro*/
-    /*color: white;  /* Color de las letras blanco *
-}  
-*/
-
 #container{
     max-width: 1200px;
     margin: 0 auto; /* Centramos el container*/
@@ -43,7 +36,6 @@ body {
     margin: 0;
 }
 
- 
 header{
     width: 100%;
     /*height: 100vh; /* Utilizo vh para que sea una página más responsive */
@@ -213,12 +205,10 @@ nav button{
 
 .registrar{
     display: flex; /* Hace que se alineen los elementos (verticalmente) del botón a la misma altura en el centro */
+    flex-direction: column;
     align-items: center; /* Alineamos horizontalmente el texto y la imagen en el centro del botón */
-    background: transparent; /* Hacemos que no tenga color el botón y que por defecto sea negro como el fondo */
-    border: 1px solid var(--primary-color-dark); /* Ahora el botón aunque es transparente tiene un borde que lo delimita */
     padding: 7px 10px;
     color: var(--primary-color-dark);
-    background-color: var(--gray-color-dark);
 }
 
 /* --------------------------------FOOTER--------------------------------------------------------- */
@@ -268,3 +258,50 @@ footer .columna a:hover {
     margin-top: 20px;
     margin-bottom: 10px;
 } */
+
+/* Media Queries para Responsiveness */
+@media (max-width: 768px) {
+    .navbar_nav_items {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .contenido h1 {
+        font-size: 2em;
+    }
+    
+    .contenido h3 {
+        font-size: 1em;
+        padding: 0 20px;
+    }
+    
+    .botonesPlayer {
+        flex-direction: column;
+    }
+    
+    footer .fila {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    footer .columna {
+        flex-basis: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .brand_logo {
+        width: 100px;
+    }
+
+    .signin_button {
+        padding: 5px 10px;
+        font-size: 10px;
+    }
+
+    #videoPlayer {
+        width: 100%;
+        max-width: 100%;
+    }
+}

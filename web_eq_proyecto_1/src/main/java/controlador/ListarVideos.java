@@ -75,6 +75,19 @@ public class ListarVideos extends HttpServlet {
 	                        DaoVideos.getInstance().borrar(id3);
 	                        out.print("{\"success\": \"Video eliminado\"}");
 	                        break;
+	                        
+	                    case 4: // Editar
+	                        int id4 = Integer.parseInt(request.getParameter("id"));
+	                        String titulo = request.getParameter("titulo");
+	                        String director = request.getParameter("director");
+	                        String musica = request.getParameter("musica");
+	                        String sinopsis = request.getParameter("sinopsis");
+	                        String foto = request.getParameter("foto");
+
+	                        Video videoEditado = new Video(id4, titulo, director, musica, sinopsis, foto);
+	                        DaoVideos.getInstance().update(videoEditado);
+	                        out.print("{\"success\": \"Video actualizado\"}");
+	                        break;    
 
 	                    default:
 	                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

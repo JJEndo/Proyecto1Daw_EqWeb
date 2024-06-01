@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Equus Quagga</title>
-    <link rel="stylesheet" type="text/css" href="css/styles.css"> <!--Vinculamos la hoja de estilo de css-->
+    <link rel="stylesheet" type="text/css" href="css/listarUsuarios.css"> <!--Vinculamos la hoja de estilo de css-->
     <link rel="shortcut icon" type="image/jpg/png" href="img/index/logo_icon.png" /> 
     <link rel="preconnect" href="https://fonts.googleapis.com"> <!-- Conectamos con la webfonts de Google -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,9 +22,11 @@
         <header>
             <nav class="navbar">
 
-                    <div class="navbar_brand">
-                        <img src="./img/eqLogo.png" alt="EQlogo" class="brand_logo" />
-                    </div>             
+				<div class="navbar_brand">
+					<a href="./index.html" title="Logo">
+						<img class="brand_logo" src="img/eqLogo.png" alt="Logo">
+					</a>
+				</div>            
                     <div class="navbar_nav_items">
                         <div class="nav_item">
                             <div class="dropdown_container">
@@ -35,15 +37,6 @@
                             </div>
                         </div>
                 
-                        <!-- <div class="nav_item">
-                            <button class="signin_button">Iniciar sesión</button>
-                        </div>
-
-                        <div>                  
-                            <a href="./cuenta.html">
-                                <button class="signin_button">Iniciar sesión</button>
-                            </a>
-                        </div>-->
                     </div>
             </nav>
 
@@ -65,6 +58,10 @@
                 </div>
 							
 			</form> 
+			
+			<div>
+			    <button onclick="window.location.href='altaUsuario.html'">Dar de alta un nuevo usuario</button>
+			</div>
 			<div class="listado" id="listado">
 
             </div>

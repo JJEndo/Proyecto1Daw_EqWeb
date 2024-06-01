@@ -1178,8 +1178,10 @@ function pintarTabla(datos) {
             <td>${nombre}</td>
             <td>${email}</td>
             <td>${permiso}</td>
-            <td><a href="altaUsuario.html?id=${id}&op=2" class="btn-editar">Editar</a></td>
-            <td><a href="javascript:borrar(${id})">Borrar</a></td>
+            <td>
+                <a href="altaUsuario.html?id=${id}&op=2" class="btn-editar">Editar</a>
+                <a href="javascript:borrar(${id})" class="btn-borrar">Borrar</a>
+            </td>
         </tr>
     `).join('');
 

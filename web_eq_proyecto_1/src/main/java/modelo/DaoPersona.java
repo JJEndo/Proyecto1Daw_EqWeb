@@ -76,17 +76,19 @@ public class DaoPersona {
 	 */
 	public void insertar(Persona p) throws SQLException {
 
-		PreparedStatement ps = null;
+		PreparedStatement ps = null;  // Declaro el PreparedStatement
 		try {
+			// Preparo la consulta SQL para insertar un nuevo registro en la tabla 'persona'
 			ps = con.prepareStatement("INSERT INTO persona (nombre,email,permiso) VALUES (?,?,?)");
-			ps.setString(1, p.getNombre());
+			// Establece los parámetros de la consulta SQL con los valores del objeto Persona
+			ps.setString(1, p.getNombre()); // Establece los valores
 			ps.setString(2, p.getEmail());
 			ps.setInt(3, p.getPermiso());
 
-			int filas = ps.executeUpdate();
+			int filas = ps.executeUpdate(); // Ejecuta la consulta de inserción
 		} finally {
-			if (ps != null)
-				ps.close();
+			if (ps != null) // Si el PreparedStatement no es nulo
+				ps.close(); // Cierra el PreparedStatement para liberar recursos
 		}
 	}
 
@@ -99,14 +101,18 @@ public class DaoPersona {
 	 * @throws SQLException Si ocurre un error al acceder a la base de datos.
 	 */
 	public Persona obtenerPorID(int id) throws SQLException {
+		// Consulta SQL para seleccionar una persona por su ID
 		String sql = "SELECT * FROM persona WHERE id=?";
+		// Prepara el PreparedStatement y asegura su cierre automático
 		try (PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setInt(1, id);
+			ps.setInt(1, id); // Establece el valor del ID en la consulta SQL
+			// Ejecuta la consulta y asegura el cierre automático del ResultSet
 			try (ResultSet rs = ps.executeQuery()) {
-				if (rs.next()) {
+				if (rs.next()) {  // Verifica si hay un resultado
+					// Crea y devuelve un nuevo objeto Persona con los datos del ResultSet
 					return new Persona(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4));
 				} else {
-					return null;
+					return null; // Devuelve null si no se encontró ninguna persona con el ID proporcionado
 				}
 			}
 		}
@@ -124,50 +130,52 @@ public class DaoPersona {
 	 * @throws SQLException Si ocurre un error al acceder a la base de datos.
 	 */
 	public Persona logueando(Persona p, String pass) throws SQLException {
+		
+		// Consulta SQL para autenticar al usuario por su email y contraseña
 		String sql = "SELECT * FROM persona WHERE email=? AND pass=?";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Persona aux = null;
+		PreparedStatement ps = null; // Declara el PreparedStatement
+		ResultSet rs = null; // Declara el ResultSet
+		Persona aux = null; // Declara la variable auxiliar para el objeto Persona
 		try {
-			ps = con.prepareStatement(sql);
-			ps.setString(1, p.getEmail());
-			ps.setString(2, pass);
+			ps = con.prepareStatement(sql); // Prepara la consulta SQL
+			ps.setString(1, p.getEmail()); // Establece el valor del email en la consulta SQL
+			ps.setString(2, pass); // Establece el valor de la contraseña en la consulta SQL
 
-			System.out.println("Executing query: " + ps.toString());
+			System.out.println("Executing query: " + ps.toString()); // Imprime la consulta SQL para depuración
 
-			rs = ps.executeQuery();
+			rs = ps.executeQuery(); // Ejecuta la consulta y obtiene el ResultSet
 
-			if (rs.next()) {
-				aux = new Persona();
-				aux.setId(rs.getInt("id"));
-				aux.setNombre(rs.getString("nombre"));
-				aux.setEmail(rs.getString("email"));
-				aux.setPermiso(rs.getInt("permiso"));
-				System.out.println("User found: " + aux.getEmail());
+			if (rs.next()) { // Verifica si hay un resultado
+				aux = new Persona(); // Crea un nuevo objeto Persona
+				aux.setId(rs.getInt("id")); // Establece el ID de la persona
+				aux.setNombre(rs.getString("nombre")); // Establece el nombre de la persona
+				aux.setEmail(rs.getString("email")); // Establece el email de la persona
+				aux.setPermiso(rs.getInt("permiso")); // Establece el permiso de la persona
+				System.out.println("User found: " + aux.getEmail()); // Imprime que se encontró un usuario
 			} else {
-				System.out.println("No user found with email: " + p.getEmail());
+				System.out.println("No user found with email: " + p.getEmail()); // Imprime que no se encontró un usuario
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			e.printStackTrace(); // Imprime la traza de la excepción
 			throw e; // Re-lanzamos la excepción para pdoer visualizarla.
 		} finally {
-			if (rs != null) {
+			if (rs != null) { // Si el ResultSet no es nulo
 				try {
-					rs.close();
+					rs.close(); // Cierra el ResultSet para liberar recursos
 				} catch (SQLException e) {
-					e.printStackTrace();
+					e.printStackTrace(); // Imprime la traza de la excepción si ocurre al cerrar
 				}
 			}
-			if (ps != null) {
+			if (ps != null) { // Si el PreparedStatement no es nulo
 				try {
-					ps.close();
+					ps.close(); // Cierra el PreparedStatement para liberar recursos
 				} catch (SQLException e) {
-					e.printStackTrace();
+					e.printStackTrace(); // Imprime la traza de la excepción si ocurre al cerrar
 				}
 			}
 		}
 
-		return aux; // Retornará null si no se encontró ninguna coincidencia
+		return aux;  // Retorna el objeto Persona encontrado o null si no se encontró ninguna coincidencia
 	}
 
 	/**
@@ -178,42 +186,44 @@ public class DaoPersona {
 	 * @param email El correo electrónico del usuario que se va a registrar.
 	 * @param password La contraseña del usuario que se va a registrar.
 	 * @param nombre El nombre del usuario que se va a registrar.
-	 * @return
-	 * @throws SQLException
+	 * @return boolean Verdadero si el registro fue exitoso, falso en caso contrario
+	 * @throws SQLException Si ocurre un error al acceder a la base de datos.
 	 */
 	public boolean registrarUsuario(String email, String password, String nombre) throws SQLException {
 		PreparedStatement ps = null;
 		boolean registrado = false;
 
 		try {
+			//// Consulta SQL para insertar un nuevo usuario en la tabla 'persona'
 			String sql = "INSERT INTO persona (email, pass, nombre) VALUES (?, ?, ?)";
-			ps = con.prepareStatement(sql);
-			ps.setString(1, email);
-			ps.setString(2, password);
-			ps.setString(3, nombre);
+			ps = con.prepareStatement(sql); // Prepara la consulta SQL
+			ps.setString(1, email); // Establece los parametros
+			ps.setString(2, password); 
+			ps.setString(3, nombre); 
 
-			int rows = ps.executeUpdate();
-			if (rows > 0) {
+			int rows = ps.executeUpdate(); // Ejecuta la consulta de inserción
+			if (rows > 0) { // Verifica si la inserción fue exitosa
 				registrado = true;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			e.printStackTrace();  // Imprime la traza de la excepción
 			throw e;
 		} finally {
 			if (ps != null) {
 				try {
-					ps.close();
+					ps.close(); // Cierra el PreparedStatement para liberar recursos
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 			}
 		}
 
-		return registrado;
+		return registrado; // Devuelve el resultado del registro
 	}
 
 	/**
 	 * Actualiza los datos de una persona existente en la base de datos.
+	 * 
 	 * 
 	 * Este método toma un objeto `Persona` que contiene los nuevos datos de una persona
 	 * y actualiza la fila correspondiente en la base de datos utilizando el ID de la persona.
@@ -224,20 +234,23 @@ public class DaoPersona {
 	 */
 	public Persona actualizar(Persona p) throws SQLException {
 
-		PreparedStatement ps = null;
+		PreparedStatement ps = null; // Declara el PreparedStatement
 		try {
+			// Prepara la consulta SQL para actualizar un registro en la tabla 'persona'
 			ps = con.prepareStatement("UPDATE persona SET nombre=?,email=?,permiso=? WHERE id=?");
+			
+			// Establece los parámetros de la consulta SQL con los valores del objeto Persona
 			ps.setString(1, p.getNombre());
 			ps.setString(2, p.getEmail());
 			ps.setInt(3, p.getPermiso());
 			ps.setInt(4, p.getId());
 
-			int filas = ps.executeUpdate();
+			int filas = ps.executeUpdate(); // Ejecuta la consulta de actualización
 		} finally {
-			if (ps != null)
-				ps.close();
+			if (ps != null) // Si el PreparedStatement no es nulo
+				ps.close();  // Cierra el PreparedStatement para liberar recursos
 		}
-		return p;
+		return p; // Retorna el objeto Persona actualizado
 
 	}
 
@@ -251,10 +264,15 @@ public class DaoPersona {
 	 */
 	public void borrar(int id) throws SQLException {
 
+		// Consulta SQL para eliminar un registro de la tabla 'persona' por su ID
 		String sql = "DELETE FROM persona WHERE id=?";
+		 // Prepara el PreparedStatement para ejecutar la consulta SQL
 		PreparedStatement ps = con.prepareStatement(sql);
+		// Establece el valor del ID en la consulta SQL
 		ps.setInt(1, id);
+		// Ejecuta la consulta de eliminación
 		int filas = ps.executeUpdate();
+		 // Cierra el PreparedStatement para liberar recursos
 		ps.close();
 
 	}
@@ -269,15 +287,21 @@ public class DaoPersona {
 	 * @throws SQLException Si ocurre un error al acceder a la base de datos.
 	 */
 	public ArrayList<Persona> listar() throws SQLException {
-
+		
+		 // Consulta SQL para seleccionar todos los registros de la tabla 'persona'
 		String sql = "SELECT * FROM persona";
+	    // Inicializa una lista vacía para almacenar los resultados
 		ArrayList<Persona> result = new ArrayList<>();
+		// Prepara el PreparedStatement y ejecuta la consulta SQL, asegurando el cierre automático de recursos
 		try (PreparedStatement ps = con.prepareStatement(sql); 
 				ResultSet rs = ps.executeQuery()) {
+			// Itera sobre cada fila del ResultSet
 			while (rs.next()) {
+				// Crea un nuevo objeto Persona con los datos de la fila actual y lo añade a la lista de resultados
 				result.add(new Persona(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4)));
 			}
 		}
+		// Devuelve la lista de objetos Persona
 		return result;
 	}
 	
@@ -288,24 +312,30 @@ public class DaoPersona {
 	 * Este método obtiene una lista de objetos `Persona` desde la base de datos cuyo campo `permiso`
 	 * coincide con el tipo proporcionado.
 	 * 
-	 * @param tipo
-	 * @return
-	 * @throws SQLException
+	 * @param tipo El tipo de permiso que se usará para filtrar los registros
+	 * @return ArrayList Persona Una lista de objetos Persona que cumplen con el filtro.
+	 * @throws SQLException Si ocurre un error al acceder a la base de datos.
 	 */
 	public ArrayList<Persona> listar(int tipo) throws SQLException {
-
+		
+		// Consulta SQL para seleccionar registros de la tabla 'persona' con un permiso específico
 		String sql = "SELECT * FROM persona WHERE permiso = ?";
+		// Inicializa una lista vacía para almacenar los resultados
 		ArrayList<Persona> result = new ArrayList<>();
-
+		
+		// Prepara el PreparedStatement y asegura su cierre automático
 		try (PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setInt(1, tipo);
+			ps.setInt(1, tipo);  // Establece el valor del permiso en la consulta SQL
+			
+			// Ejecuta la consulta y asegura el cierre automático del ResultSet
 			try (ResultSet rs = ps.executeQuery()) {
-				while (rs.next()) {
+				while (rs.next()) { // Itera sobre cada fila del ResultSet
+					// Crea un nuevo objeto Persona con los datos de la fila actual y lo añade a la lista de resultados
 					result.add(new Persona(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4)));
 				}
 			}
 		}
-
+	    // Devuelve la lista de objetos Persona
 		return result;
 	}
 
@@ -319,8 +349,8 @@ public class DaoPersona {
 	 * @throws SQLException Si ocurre un error al acceder a la base de datos.
 	 */
 	public String listarJson() throws SQLException {
-		Gson gson = new Gson();
-		return gson.toJson(this.listar());
+		Gson gson = new Gson(); // Crea una instancia de Gson
+		return gson.toJson(this.listar()); // Convierte la lista de personas a JSON y la devuelve
 	}
 
 	/**
@@ -335,9 +365,9 @@ public class DaoPersona {
 	 */
 	public String listarJson(int tipo) throws SQLException {
 
-		Gson gson = new Gson();
-		ArrayList<Persona> personas = this.listar(tipo);
-		return gson.toJson(personas);
+		Gson gson = new Gson(); // Crea una instancia de Gson
+		ArrayList<Persona> personas = this.listar(tipo); // Obtiene la lista de personas con el permiso específico
+		return gson.toJson(personas); // Convierte la lista de personas a JSON y la devuelve
 	}
 
 	/**

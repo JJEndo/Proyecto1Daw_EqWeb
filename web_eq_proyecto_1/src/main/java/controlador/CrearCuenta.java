@@ -46,41 +46,44 @@ public class CrearCuenta extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
-		 // Obtener parámetros
-		 String email = request.getParameter("email");
-	        String password = getMD5(request.getParameter("password"));
-	        String nombre = request.getParameter("nombre");
+		// Obtener parámetros de la solicitud
+		String email = request.getParameter("email");
+		String password = getMD5(request.getParameter("password"));
+		String nombre = request.getParameter("nombre");
 
-	        if (email == null || password == null || nombre == null || email.isEmpty() || password.isEmpty() || nombre.isEmpty()) {
-	            response.sendRedirect("error.html"); // Redirige a una página de error si los parámetros son inválidos
-	            return;
-	        }
+		 // Validar los parámetros
+		if (email == null || password == null || nombre == null || email.isEmpty() || password.isEmpty()
+				|| nombre.isEmpty()) {
+			response.sendRedirect("error.html"); // Redirige a una página de error si los parámetros son inválidos
+			return; // Termina la ejecución del método
+		}
 
-	        try {
-	            if (DaoPersona.getInstance().registrarUsuario(email, password, nombre)) {
-	                response.sendRedirect("playlist.html");
-	            } else {
-	                response.sendRedirect("error.html");
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	            response.sendRedirect("error.html"); // Redirige a una página de error en caso de excepción
-	        }
-	    }
-
-	    public static String getMD5(String input) {
-	        try {
-	            MessageDigest md = MessageDigest.getInstance("MD5");
-	            byte[] messageDigest = md.digest(input.getBytes());
-	            BigInteger number = new BigInteger(1, messageDigest);
-	            String hashtext = number.toString(16);
-
-	            while (hashtext.length() < 32) {
-	                hashtext = "0" + hashtext;
-	            }
-	            return hashtext;
-	        } catch (NoSuchAlgorithmException e) {
-	            throw new RuntimeException(e);
-	        }
-	    }
+		try {
+			// Intentar registrar al usuario
+			if (DaoPersona.getInstance().registrarUsuario(email, password, nombre)) {
+				response.sendRedirect("playlist.html"); // Redirige a la página de playlist si el registro es exitoso
+			} else {
+				response.sendRedirect("error.html"); // Redirige a una página de error si el registro falla
+			}
+		} catch (SQLException e) {
+			e.printStackTrace(); // Imprime la traza de la excepción
+			response.sendRedirect("error.html"); // Redirige a una página de error en caso de excepción
+		}
 	}
+
+	public static String getMD5(String input) {
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			byte[] messageDigest = md.digest(input.getBytes());
+			BigInteger number = new BigInteger(1, messageDigest);
+			String hashtext = number.toString(16);
+
+			while (hashtext.length() < 32) {
+				hashtext = "0" + hashtext;
+			}
+			return hashtext;
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
+	}
+}

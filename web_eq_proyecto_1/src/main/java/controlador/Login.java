@@ -20,55 +20,67 @@ import java.sql.SQLException;
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	HttpSession sesion;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public Login() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public Login() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
-	    String mail = request.getParameter("email");
-	    String pass = getMD5(request.getParameter("pass"));
+		// Obtener los parámetros "email" y "pass" de la solicitud
+		String mail = request.getParameter("email");
+		String pass = getMD5(request.getParameter("pass")); // Encriptar la contraseña usando el método getMD5
 
-	    if (mail == null || pass == null || mail.isEmpty() || pass.isEmpty()) {
-	        response.sendRedirect("error.html"); // Redirige a una página de error si los parámetros son inválidos
-	        return;
-	    }
+		// Verificar si el email o la contraseña son nulos o están vacíos
+		if (mail == null || pass == null || mail.isEmpty() || pass.isEmpty()) {
+			response.sendRedirect("error.html"); // Redirige a una página de error si los parámetros son inválidos
+			return; // Terminar la ejecución del método
+		}
 
-	    Persona p = new Persona();
-	    p.setEmail(mail);
+		// Crear un nuevo objeto Persona y establecer su email
+		Persona p = new Persona();
+		p.setEmail(mail);
 
-	    try {
-	        if (p.logueo(pass)) {
-	            HttpSession sesion = request.getSession();
-	            sesion.setAttribute("id", p.getId());
-	            sesion.setAttribute("permiso", p.getPermiso());
-	            response.sendRedirect("admin.html");
-	        } else {
-	            response.sendRedirect("crearCuenta.html");
-	        }
-	    } catch (SQLException | IOException e) {
-	        e.printStackTrace();
-	        response.sendRedirect("error.html"); // Redirige a una página de error en caso de excepción
-	    }
+		// Intentar realizar el inicio de sesión
+		try {
+			if (p.logueo(pass)) { // Verificar si el inicio de sesión es exitoso
+				// Si el inicio de sesión es exitoso, obtener la sesión actual del usuario
+				HttpSession sesion = request.getSession();
+				sesion.setAttribute("id", p.getId()); // Establecer el atributo "id" en la sesión
+				sesion.setAttribute("permiso", p.getPermiso()); // Establecer el atributo "permiso" en la sesión
+				response.sendRedirect("admin.html"); // Redirigir a la página de administración
+			} else {
+				// Si el inicio de sesión falla, redirigir a la página de creación de cuent
+				response.sendRedirect("crearCuenta.html");
+			}
+		} catch (SQLException | IOException e) {
+			// Manejar excepciones SQL e IO
+			e.printStackTrace();
+			response.sendRedirect("error.html"); // Redirige a una página de error en caso de excepción
+		}
 	}
 
+	//Algoritmo MD5 para calcular el hash de la contraseña
 	public static String getMD5(String input) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -84,36 +96,5 @@ public class Login extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
-	
-/*		
-		
-		String mail = request.getParameter("mail");
-		String pass = request.getParameter("pass");
-		
-		Persona p = new Persona();
-		p.setEmail(mail);
-		
-		//protección
-		
-		try {
-			if(p.logueo(pass)){
-				
-				sesion = request.getSession();
-				
-				sesion.setAttribute("id", p.getClass());
-				sesion.setAttribute("permiso", p.getPermiso());
-				
-				response.sendRedirect("playlist.html");
-				
-			}else {
-				response.sendRedirect("crearCuenta.html");
-			}
-		} catch (SQLException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-	}
-*/
+
 }

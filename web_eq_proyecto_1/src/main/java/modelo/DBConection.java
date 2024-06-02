@@ -46,16 +46,21 @@ public class DBConection {
 	 */
 	public static Connection getConnection() throws SQLException {
 		
+		// Verificar si la instancia de la conexión es nula
 		if(instance == null) {
-			//opcional
+			// Crear un objeto Properties para almacenar las propiedades de la conexión
 			Properties props = new Properties();
+			// Establecer el nombre de usuario para la conexión
 			props.put("user", "root");
+			// Establecer la contraseña para la conexión
 			props.put("password", "");
+			// Establecer el conjunto de caracteres para la conexión
 			props.put("charset", "UTF-8");
 
-			
+			// Crear la conexión a la base de datos utilizando DriverManager y las propiedades definidas
 			instance = DriverManager.getConnection(JDBC_URL, props);	
 		}
+		// Devolver la instancia de la conexión
 		return instance;
 		
 	}
